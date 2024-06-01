@@ -29,7 +29,7 @@ public class Auth_Screen extends AppCompatActivity {
         // Referenciar los botones
         Button loginButton = findViewById(R.id.login_button);
         Button registerButton = findViewById(R.id.register_button);
-
+        /*
         // Instanciar los listeners
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -46,5 +46,6 @@ public class Auth_Screen extends AppCompatActivity {
                 startActivity(registerIntent);
             }
         });
+        */
     }
 }
