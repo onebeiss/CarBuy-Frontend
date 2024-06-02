@@ -29,20 +29,20 @@ public class Auth_Screen extends AppCompatActivity {
         // Referenciar los botones
         Button loginButton = findViewById(R.id.login_button);
         Button registerButton = findViewById(R.id.register_button);
-        /*
+
         // Instanciar los listeners
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent loginIntent = new Intent(Home_Screen.this, Login_Screen.class);
+                Intent loginIntent = new Intent(Auth_Screen.this, Login_Screen.class);
                 startActivity(loginIntent);
             }
         });
-
+/*
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent registerIntent = new Intent(Home_Screen.this, Register_Screen.class);
+                Intent registerIntent = new Intent(Auth_Screen.this, Register_Screen.class);
                 startActivity(registerIntent);
             }
         });
