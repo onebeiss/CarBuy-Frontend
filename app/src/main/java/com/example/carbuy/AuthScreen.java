@@ -11,7 +11,7 @@ import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
-public class Auth_Screen extends AppCompatActivity {
+public class AuthScreen extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -34,7 +34,7 @@ public class Auth_Screen extends AppCompatActivity {
         loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent loginIntent = new Intent(Auth_Screen.this, Login_Screen.class);
+                Intent loginIntent = new Intent(AuthScreen.this, LoginScreen.class);
                 startActivity(loginIntent);
             }
         });

@@ -21,13 +21,12 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 
 import org.json.JSONException;
 import org.json.JSONObject;
 
-public class Login_Screen extends AppCompatActivity {
+public class LoginScreen extends AppCompatActivity {
 
     private Context context = this;
     private RequestQueue queueForRequests;
@@ -107,7 +106,7 @@ public class Login_Screen extends AppCompatActivity {
 
                         editor.apply();
 
-                        Intent homeScreenIntent = new Intent(Login_Screen.this, MainActivity.class);
+                        Intent homeScreenIntent = new Intent(LoginScreen.this, HomeScreen.class);
                         startActivity(homeScreenIntent);
                         finish();
                     }
