@@ -83,7 +83,7 @@ public class Login_Screen extends AppCompatActivity {
 
         JsonObjectRequest request = new JsonObjectRequest(
                 Request.Method.POST,
-                Server.name + "/sessions/",
+                Server.name + "sessions/",
                 requestBody,
                 new Response.Listener<JSONObject>() {
                     @Override
@@ -122,7 +122,7 @@ public class Login_Screen extends AppCompatActivity {
                             String errorMessage = new String(error.networkResponse.data);
                             Toast.makeText(context, "Server Error: " + serverCodeError + "\nMessage: " + errorMessage, Toast.LENGTH_LONG).show();
                         } else {
-                            Toast.makeText(context, "el error.networkResponse es null", Toast.LENGTH_SHORT).show();
+                            Toast.makeText(context, "error: error.networkResponse is null", Toast.LENGTH_SHORT).show();
                         }
 
                     }
