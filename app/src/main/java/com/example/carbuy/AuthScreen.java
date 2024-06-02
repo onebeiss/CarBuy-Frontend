@@ -38,14 +38,13 @@ public class AuthScreen extends AppCompatActivity {
                 startActivity(loginIntent);
             }
         });
-/*
+
         registerButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Intent registerIntent = new Intent(Auth_Screen.this, Register_Screen.class);
+                Intent registerIntent = new Intent(AuthScreen.this, RegisterScreen.class);
                 startActivity(registerIntent);
             }
         });
-        */
     }
 }
