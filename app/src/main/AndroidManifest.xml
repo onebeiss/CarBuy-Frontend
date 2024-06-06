@@ -16,6 +16,9 @@
         android:theme="@style/Theme.CarBuy"
         tools:targetApi="31">
         <activity
+            android:name=".AdDetailScreen"
+            android:exported="false" />
+        <activity
             android:name=".RegisterScreen"
             android:exported="false" />
         <activity
