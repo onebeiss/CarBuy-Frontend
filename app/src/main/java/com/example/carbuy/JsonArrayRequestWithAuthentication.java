@@ -7,25 +7,24 @@ import androidx.annotation.Nullable;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Response;
-import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonArrayRequest;
 
 import org.json.JSONArray;
-import org.json.JSONObject;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public class JsonObjectRequestWithAuthentication extends JsonObjectRequest {
+public class JsonArrayRequestWithAuthentication extends JsonArrayRequest {
     private Context context;
 
-    public JsonObjectRequestWithAuthentication(int method,
+    public JsonArrayRequestWithAuthentication(int method,
                                               String url,
-                                              @Nullable JSONObject jsonObjectRequest,
-                                              Response.Listener<JSONObject> listener,
+                                              @Nullable JSONArray jsonArrayRequest,
+                                              Response.Listener<JSONArray> listener,
                                               @Nullable Response.ErrorListener errorListener,
                                               Context context
     ) {
-        super(method, url, jsonObjectRequest, listener, errorListener);
+        super(method, url, jsonArrayRequest, listener, errorListener);
         this.context = context;
     }
 

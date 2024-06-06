@@ -17,6 +17,13 @@ dependencyResolutionManagement {
         google()
         mavenCentral()
     }
+    versionCatalogs {
+        create("libs") {
+            // ... otras dependencias que ya tengas
+            library("glide", "com.github.bumptech.glide:glide:4.13.0")
+            library("glide-compiler", "com.github.bumptech.glide:compiler:4.13.0")
+        }
+    }
 }
 
 rootProject.name = "CarBuy"
