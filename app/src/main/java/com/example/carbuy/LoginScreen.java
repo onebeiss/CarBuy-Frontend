@@ -95,14 +95,11 @@ public class LoginScreen extends AppCompatActivity {
                         } catch (JSONException e) {
                             throw new RuntimeException(e);
                         }
-                        Toast.makeText(context, "Token: " + receivedToken, Toast.LENGTH_SHORT).show();
 
                         SharedPreferences preferences = context.getSharedPreferences("SESSIONS_APP_PREFS", MODE_PRIVATE);
                         SharedPreferences.Editor editor = preferences.edit();
                         editor.putString("VALID_USERNAME", emailEditText.getText().toString());
                         editor.putString("VALID_TOKEN", receivedToken);
-
-
 
                         editor.apply();
 

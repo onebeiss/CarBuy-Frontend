@@ -4,10 +4,10 @@
     <selectionStates>
       <SelectionState runConfigName="app">
         <option name="selectionMode" value="DROPDOWN" />
-        <DropdownSelection timestamp="2024-06-01T13:39:18.513758100Z">
+        <DropdownSelection timestamp="2024-06-05T14:03:19.077830500Z">
           <Target type="DEFAULT_BOOT">
             <handle>
-              <DeviceId pluginId="LocalEmulator" identifier="path=C:\Users\victo\.android\avd\Pixel_XL_API_34.avd" />
+              <DeviceId pluginId="PhysicalDevice" identifier="serial=72bb013d0013" />
             </handle>
           </Target>
         </DropdownSelection>
