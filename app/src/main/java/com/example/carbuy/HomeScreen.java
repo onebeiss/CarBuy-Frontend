@@ -43,6 +43,8 @@ public class HomeScreen extends AppCompatActivity {
     private ProgressBar progressBar;
     private RecyclerView recyclerView1, recyclerView2;
     private TextView emptyView, profileUserName, profileEmail;
+    private AllFavouritesAdapter adapter2;
+    private List<AllFavouritesItem> favsList = new ArrayList<>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -73,16 +75,18 @@ public class HomeScreen extends AppCompatActivity {
 
         Activity activity = this;
 
+        // Load data for the first time
+        loadData();
+
         SharedPreferences preferences = getSharedPreferences("SESSIONS_APP_PREFS", MODE_PRIVATE);
         String sessionToken = preferences.getString("VALID_TOKEN", null);
         String url1 = Server.name + "get_ads/";
-        String url2 = Server.name + "get_favourites/";
         String url3 = Server.name + "get_user/";
 
         JSONArray jsonArray = new JSONArray();
-
         jsonArray.put(sessionToken);
 
+        // Recycler View vehículos recomendados
         JsonArrayRequestWithAuthentication request = new JsonArrayRequestWithAuthentication(
                 Request.Method.GET,
                 url1,
@@ -92,7 +96,6 @@ public class HomeScreen extends AppCompatActivity {
                     public void onResponse(JSONArray response) {
                         progressBar.setVisibility(View.INVISIBLE);
                         try {
-
                             List<AllAdsItem> adsList = new ArrayList<>();  // Lista para almacenar elementos
 
                             // Itera a través del JSONArray para obtener datos de cada elemento
@@ -112,7 +115,7 @@ public class HomeScreen extends AppCompatActivity {
                                     try {
                                         AllAdsItem selectedItem = adsList.get(position);
                                         String adId = selectedItem.getId();
-                                        Intent intent = new Intent(activity, HomeScreen.class);
+                                        Intent intent = new Intent(activity, AdDetailScreen.class);
                                         intent.putExtra("AD_ID", adId);
                                         startActivity(intent);
                                     } catch (Exception e) {
@@ -124,7 +127,7 @@ public class HomeScreen extends AppCompatActivity {
 
                         } catch (JSONException e) {
                             e.printStackTrace();
-                            }
+                        }
                     }
                 },
                 new Response.ErrorListener() {
@@ -132,67 +135,11 @@ public class HomeScreen extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Toast.makeText(activity, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                     }
-                }
-        ,this);
-
-        JsonArrayRequestWithAuthentication request2 = new JsonArrayRequestWithAuthentication(
-                Request.Method.GET,
-                url2,
-                null,
-                new Response.Listener<JSONArray>() {
-                    @Override
-                    public void onResponse(JSONArray response) {
-                        try {
-                            List<AllFavouritesItem> favsList = new ArrayList<>();  // Lista para almacenar elementos
-
-                            // Itera a través del JSONArray para obtener datos de cada elemento
-                            for (int i = 0; i < response.length(); i++) {
-                                // Obtiene un objeto JSON que representa un elemento del catálogo
-                                JSONObject fav = response.getJSONObject(i);
-                                AllFavouritesItem data = new AllFavouritesItem(fav);  // Crea un objeto MyItem a partir del JSONObject
-                                favsList.add(data);  // Agrega el objeto a la lista
-                            }
-
-                            AllFavouritesAdapter adapter2 = new AllFavouritesAdapter(favsList, activity);
-                            recyclerView2.setAdapter(adapter2);
-                            adapter2.setOnItemClickListener(new AllFavouritesAdapter.OnItemClickListener() {
-                                @Override
-                                public void onItemClick(int position) {
-                                    try {
-                                        AllFavouritesItem selectedItem = favsList.get(position);
-                                        String favId = selectedItem.getId();
-                                        Intent intent = new Intent(activity, HomeScreen.class);
-                                        intent.putExtra("FAV_ID", favId);
-                                        startActivity(intent);
-                                    } catch (Exception e) {
-                                        e.printStackTrace();
-                                        Log.e("TAG", "Error: " + e.getMessage());
-                                    }
-                                }
-                            });
-
-                            if (favsList.isEmpty()) {
-                                emptyView.setVisibility(View.VISIBLE);
-                                recyclerView2.setVisibility(View.GONE);
-                            } else {
-                                emptyView.setVisibility(View.GONE);
-                                recyclerView2.setVisibility(View.VISIBLE);
-                            }
-
-                        }catch (JSONException e){
-                            e.printStackTrace();
-                        }
-                    }
                 },
-                new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
+                this
+        );
 
-                        Log.e("TAG", "Error: " + error.getMessage());
-                    }
-                }
-        ,this);
-
+        // Request para mostrar la información del usuario
         JsonObjectRequestWithAuthentication request3 = new JsonObjectRequestWithAuthentication(
                 Request.Method.GET,
                 url3,
@@ -217,13 +164,94 @@ public class HomeScreen extends AppCompatActivity {
                         Toast.makeText(activity, "Error: " + error.getMessage(), Toast.LENGTH_SHORT).show();
                         Log.e("TAG", "Error: " + error.getMessage());
                     }
-                }
-        ,this);
+                },
+                this
+        );
 
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(request);
-        queue.add(request2);
         queue.add(request3);
+    }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        // Refresh data when activity is resumed
+        loadData();
+    }
+
+    private void loadData() {
+        String url2 = Server.name + "get_favourites/";
+        Activity activity = this;
+
+        JsonArrayRequestWithAuthentication request2 = new JsonArrayRequestWithAuthentication(
+                Request.Method.GET,
+                url2,
+                null,
+                new Response.Listener<JSONArray>() {
+                    @Override
+                    public void onResponse(JSONArray response) {
+                        try {
+                            favsList.clear();  // Clear the previous data
+
+                            // Itera a través del JSONArray para obtener datos de cada elemento
+                            for (int i = 0; i < response.length(); i++) {
+                                // Obtiene un objeto JSON que representa un elemento del catálogo
+                                JSONObject fav = response.getJSONObject(i);
+                                AllFavouritesItem data = new AllFavouritesItem(fav);  // Crea un objeto MyItem a partir del JSONObject
+                                favsList.add(data);  // Agrega el objeto a la lista
+                            }
+
+                            // Invierte la lista para mostrar los favoritos más recientes primero
+                            Collections.reverse(favsList);
+
+                            if (adapter2 == null) {
+                                adapter2 = new AllFavouritesAdapter(favsList, activity);
+                                recyclerView2.setAdapter(adapter2);
+                                adapter2.setOnItemClickListener(new AllFavouritesAdapter.OnItemClickListener() {
+                                    @Override
+                                    public void onItemClick(int position) {
+                                        try {
+                                            AllFavouritesItem selectedItem = favsList.get(position);
+                                            String favId = selectedItem.getId();
+                                            Intent intent = new Intent(activity, AdDetailScreen.class);
+                                            intent.putExtra("AD_ID", favId);
+                                            startActivity(intent);
+                                        } catch (Exception e) {
+                                            e.printStackTrace();
+                                            Log.e("TAG", "Error: " + e.getMessage());
+                                        }
+                                    }
+                                });
+                            } else {
+                                adapter2.notifyDataSetChanged();
+                            }
+
+                            if (favsList.isEmpty()) {
+                                emptyView.setVisibility(View.VISIBLE);
+                                recyclerView2.setVisibility(View.GONE);
+                            } else {
+                                emptyView.setVisibility(View.GONE);
+                                recyclerView2.setVisibility(View.VISIBLE);
+                            }
+
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                },
+                new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.e("TAG", "Error: " + error.getMessage());
+                    }
+                },
+                this
+        );
+
+        RequestQueue queue = Volley.newRequestQueue(this);
+        queue.add(request2);
+
 /*
         bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
             @Override

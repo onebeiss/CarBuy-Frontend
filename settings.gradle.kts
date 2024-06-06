@@ -22,6 +22,7 @@ dependencyResolutionManagement {
             // ... otras dependencias que ya tengas
             library("glide", "com.github.bumptech.glide:glide:4.13.0")
             library("glide-compiler", "com.github.bumptech.glide:compiler:4.13.0")
+            library("picasso", "com.squareup.picasso:picasso:2.8")
         }
     }
 }
