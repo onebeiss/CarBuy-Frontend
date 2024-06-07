@@ -171,6 +171,28 @@ public class HomeScreen extends AppCompatActivity {
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(request);
         queue.add(request3);
+
+        bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
+            @Override
+            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+                if (menuItem.getItemId() == R.id.search_icon) {
+                    Intent intent = new Intent(activity, SearchScreen.class);
+                    startActivity(intent);
+                }
+                /*
+                if (menuItem.getItemId() == R.id.favourites_icon) {
+                    Intent intent = new Intent(activity, FavouritesScreen.class);
+                    startActivity(intent);
+                }
+                if (menuItem.getItemId() == R.id.settings_icon) {
+                    Intent intent = new Intent(activity, SettingsScreen.class);
+                    startActivity(intent);
+                }
+
+                 */
+                return true;
+            }
+        });
     }
 
     @Override
@@ -251,25 +273,5 @@ public class HomeScreen extends AppCompatActivity {
 
         RequestQueue queue = Volley.newRequestQueue(this);
         queue.add(request2);
-
-/*
-        bottomNavigation.setOnItemSelectedListener(new NavigationBarView.OnItemSelectedListener() {
-            @Override
-            public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
-                if (menuItem.getItemId() == R.id.search_icon) {
-                    Intent intent = new Intent(activity, SearchScreen.class);
-                    startActivity(intent);
-                }
-                if (menuItem.getItemId() == R.id.favourites_icon) {
-                    Intent intent = new Intent(activity, FavouritesScreen.class);
-                    startActivity(intent);
-                }
-                if (menuItem.getItemId() == R.id.settings_icon) {
-                    Intent intent = new Intent(activity, SettingsScreen.class);
-                    startActivity(intent);
-                }
-            }
-        });
-         */
     }
 }
